@@ -1,0 +1,1 @@
+Meu nome é André eu sou brasileiro aprendendo sobre Claude e DevOps.
