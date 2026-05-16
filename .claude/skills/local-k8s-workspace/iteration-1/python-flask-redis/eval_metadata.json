@@ -1,0 +1,43 @@
+{
+  "eval_id": 1,
+  "eval_name": "python-flask-redis",
+  "prompt": "Meu projeto é uma API Flask (Python) que usa Redis para cache. O Dockerfile expõe a porta 5000. No docker-compose tenho 'web' (minha app) e 'redis' (redis:7-alpine). A app conecta no Redis via variável REDIS_URL=redis://redis:6379. O Flask tem uma rota /ping que retorna 200 OK. Quero rodar tudo no Kubernetes local com kind. Preciso dos manifestos yaml e de um script pra automatizar tudo, incluindo LoadBalancer.",
+  "assertions": [
+    {
+      "name": "flask_app_deployment",
+      "description": "Existe um Deployment para a aplicação Flask"
+    },
+    {
+      "name": "redis_deployment",
+      "description": "Existe um Deployment para o Redis"
+    },
+    {
+      "name": "loadbalancer_for_flask",
+      "description": "O Service da app Flask é do tipo LoadBalancer"
+    },
+    {
+      "name": "clusterip_for_redis",
+      "description": "O Service do Redis é do tipo ClusterIP (interno)"
+    },
+    {
+      "name": "redis_url_env_var",
+      "description": "A REDIS_URL aponta para o Service name do Redis dentro do cluster (redis://redis:6379)"
+    },
+    {
+      "name": "readiness_probe_uses_ping",
+      "description": "O readinessProbe da app usa /ping (conforme o endpoint definido no Flask)"
+    },
+    {
+      "name": "imagepullpolicy_never",
+      "description": "O Deployment da app tem imagePullPolicy: Never"
+    },
+    {
+      "name": "setup_sh_metallb_installed",
+      "description": "setup.sh instala o MetalLB"
+    },
+    {
+      "name": "setup_sh_ipv4_filter",
+      "description": "setup.sh filtra a subnet IPv4 (não usa IPv6 para o MetalLB pool)"
+    }
+  ]
+}

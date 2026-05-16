@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kube-news
+  labels:
+    app: kube-news
 spec:
   replicas: 1
   selector:
@@ -20,7 +22,7 @@ spec:
             - containerPort: 8080
           env:
             - name: DB_HOST
-              value: postgres
+              value: "postgres"
             - name: DB_PORT
               value: "5432"
             - name: DB_DATABASE
@@ -42,5 +44,12 @@ spec:
             httpGet:
               path: /ready
               port: 8080
-            initialDelaySeconds: 10
+            initialDelaySeconds: 5
             periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10

@@ -1,0 +1,44 @@
+{
+  "eval_name": "first-time-k8s",
+  "variant": "with_skill",
+  "pass_rate": 0.86,
+  "passed": 6,
+  "total": 7,
+  "expectations": [
+    {
+      "text": "mentions_kind_installation",
+      "passed": true,
+      "evidence": "kind installation mentioned"
+    },
+    {
+      "text": "mentions_kubectl_installation",
+      "passed": false,
+      "evidence": "kubectl installation not mentioned"
+    },
+    {
+      "text": "generates_k8s_manifests",
+      "passed": true,
+      "evidence": "Deployment + Service manifests found"
+    },
+    {
+      "text": "uses_loadbalancer_service",
+      "passed": true,
+      "evidence": "LoadBalancer or NodePort found"
+    },
+    {
+      "text": "generates_setup_script",
+      "passed": true,
+      "evidence": "setup.sh or automation script found"
+    },
+    {
+      "text": "mentions_metallb_for_loadbalancer",
+      "passed": true,
+      "evidence": "MetalLB mentioned"
+    },
+    {
+      "text": "imagepullpolicy_never_present",
+      "passed": true,
+      "evidence": "imagePullPolicy: Never found"
+    }
+  ]
+}

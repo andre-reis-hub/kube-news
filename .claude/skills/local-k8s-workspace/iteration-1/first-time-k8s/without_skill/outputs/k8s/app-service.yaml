@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-news
+  namespace: kube-news
+spec:
+  selector:
+    app: kube-news
+  ports:
+    - port: 80
+      targetPort: 8080
+      # nodePort é a porta que você abrirá no browser quando usar kind
+      # Faixa permitida pelo k8s: 30000-32767
+      nodePort: 30080
+  # NodePort expõe o serviço em cada nó do cluster.
+  # É a forma mais simples de acessar pelo browser em ambientes locais sem LoadBalancer.
+  type: NodePort

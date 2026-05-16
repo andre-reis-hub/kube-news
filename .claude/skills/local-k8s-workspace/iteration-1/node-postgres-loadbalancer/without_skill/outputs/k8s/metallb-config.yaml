@@ -1,0 +1,22 @@
+# MetalLB IPAddressPool and L2Advertisement (MetalLB >= v0.13)
+# The IP range below must fall within the Docker network used by kind.
+# The setup.sh script detects this range automatically and patches this file.
+# Default placeholder: 172.18.255.200 - 172.18.255.250
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: default
+  namespace: metallb-system
+spec:
+  addresses:
+    - 172.18.255.200-172.18.255.250
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: default
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - default

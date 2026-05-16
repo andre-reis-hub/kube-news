@@ -16,7 +16,9 @@
       "Bash(curl -Lo /tmp/kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64)",
       "Bash(sudo mv /tmp/kind /usr/local/bin/kind)",
       "Bash(kind version *)",
-      "Bash(echo \"kind instalado: $\\(kind version\\)\")"
+      "Bash(echo \"kind instalado: $\\(kind version\\)\")",
+      "Bash(python3 grade.py)",
+      "Bash(python3 *)"
     ]
   }
 }

@@ -1,0 +1,202 @@
+{
+  "metadata": {
+    "skill_name": "local-k8s",
+    "skill_path": ".claude/skills/local-k8s",
+    "executor_model": "claude-sonnet-4-6",
+    "timestamp": "2026-05-16T18:00:00Z",
+    "evals_run": ["node-postgres-loadbalancer", "python-flask-redis", "first-time-k8s"],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "eval_name": "node-postgres-loadbalancer",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 10,
+        "failed": 0,
+        "total": 10,
+        "time_seconds": 74.4,
+        "tokens": 18317,
+        "tool_calls": 15,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "secret_manifest_present", "passed": true, "evidence": "Secret manifest com credenciais do banco encontrado"},
+        {"text": "pvc_manifest_present", "passed": true, "evidence": "PVC para dados do postgres encontrado"},
+        {"text": "two_deployments_present", "passed": true, "evidence": "Deployments para app e postgres encontrados"},
+        {"text": "loadbalancer_service_type", "passed": true, "evidence": "Service type: LoadBalancer para app"},
+        {"text": "readiness_probe_uses_ready_endpoint", "passed": true, "evidence": "Caminho /ready usado (confirmado no system-life.js)"},
+        {"text": "imagepullpolicy_never", "passed": true, "evidence": "imagePullPolicy: Never presente"},
+        {"text": "credentials_via_secretkeyref", "passed": true, "evidence": "secretKeyRef usado para credenciais do banco"},
+        {"text": "setup_sh_ipv4_filter", "passed": true, "evidence": "grep -v ':' filtra subnet IPv6 da rede kind"},
+        {"text": "setup_sh_metallb_installed", "passed": true, "evidence": "MetalLB instalado com wait para readiness"},
+        {"text": "setup_sh_kind_load", "passed": true, "evidence": "kind load docker-image presente no setup.sh"}
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "eval_name": "node-postgres-loadbalancer",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 8,
+        "failed": 2,
+        "total": 10,
+        "time_seconds": 107.5,
+        "tokens": 20516,
+        "tool_calls": 20,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "secret_manifest_present", "passed": true, "evidence": "Secret manifest criado"},
+        {"text": "pvc_manifest_present", "passed": true, "evidence": "PVC encontrado"},
+        {"text": "two_deployments_present", "passed": true, "evidence": "2 Deployments encontrados"},
+        {"text": "loadbalancer_service_type", "passed": true, "evidence": "LoadBalancer service presente"},
+        {"text": "readiness_probe_uses_ready_endpoint", "passed": true, "evidence": "Caminho /ready usado"},
+        {"text": "imagepullpolicy_never", "passed": true, "evidence": "imagePullPolicy: Never presente"},
+        {"text": "credentials_via_secretkeyref", "passed": false, "evidence": "Sem secretKeyRef — credenciais em ConfigMap sem referência ao Secret"},
+        {"text": "setup_sh_ipv4_filter", "passed": false, "evidence": "Sem filtro IPv4 — MetalLB receberia subnet IPv6 e rejeitaria o pool"},
+        {"text": "setup_sh_metallb_installed", "passed": true, "evidence": "MetalLB via Helm"},
+        {"text": "setup_sh_kind_load", "passed": true, "evidence": "kind load docker-image presente"}
+      ],
+      "notes": ["Usou Helm para MetalLB ao invés de kubectl apply — válido mas adiciona dependência", "Credenciais divididas entre ConfigMap e Secret ao invés de tudo no Secret"]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "python-flask-redis",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 9,
+        "failed": 0,
+        "total": 9,
+        "time_seconds": 49.7,
+        "tokens": 14558,
+        "tool_calls": 8,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "flask_app_deployment", "passed": true, "evidence": "Deployment Flask encontrado"},
+        {"text": "redis_deployment", "passed": true, "evidence": "Deployment Redis com redis:7-alpine"},
+        {"text": "loadbalancer_for_flask", "passed": true, "evidence": "LoadBalancer porta 80 -> 5000"},
+        {"text": "clusterip_for_redis", "passed": true, "evidence": "ClusterIP para Redis"},
+        {"text": "redis_url_env_var", "passed": true, "evidence": "REDIS_URL=redis://redis:6379 via ConfigMap"},
+        {"text": "readiness_probe_uses_ping", "passed": true, "evidence": "Probe /ping encontrada"},
+        {"text": "imagepullpolicy_never", "passed": true, "evidence": "imagePullPolicy: Never"},
+        {"text": "setup_sh_metallb_installed", "passed": true, "evidence": "MetalLB instalado com wait"},
+        {"text": "setup_sh_ipv4_filter", "passed": true, "evidence": "grep -v ':' filtro IPv4 presente"}
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "python-flask-redis",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.78,
+        "passed": 7,
+        "failed": 2,
+        "total": 9,
+        "time_seconds": 71.6,
+        "tokens": 13510,
+        "tool_calls": 9,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "flask_app_deployment", "passed": true, "evidence": "Deployment encontrado"},
+        {"text": "redis_deployment", "passed": true, "evidence": "Deployment Redis encontrado"},
+        {"text": "loadbalancer_for_flask", "passed": true, "evidence": "LoadBalancer service"},
+        {"text": "clusterip_for_redis", "passed": true, "evidence": "ClusterIP para Redis"},
+        {"text": "redis_url_env_var", "passed": true, "evidence": "REDIS_URL presente"},
+        {"text": "readiness_probe_uses_ping", "passed": true, "evidence": "Probe /ping encontrada"},
+        {"text": "imagepullpolicy_never", "passed": false, "evidence": "IfNotPresent usado ao invés de Never — imagem pode ser puxada do registry e falhar"},
+        {"text": "setup_sh_metallb_installed", "passed": true, "evidence": "MetalLB mencionado"},
+        {"text": "setup_sh_ipv4_filter", "passed": false, "evidence": "Sem filtro IPv4 — MetalLB pool falharia com subnet IPv6 do kind"}
+      ],
+      "notes": ["Usou imagePullPolicy: IfNotPresent — funciona às vezes mas não é confiável com kind"]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "first-time-k8s",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.857,
+        "passed": 6,
+        "failed": 1,
+        "total": 7,
+        "time_seconds": 96.6,
+        "tokens": 19687,
+        "tool_calls": 16,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "mentions_kind_installation", "passed": true, "evidence": "Instalação do kind mencionada"},
+        {"text": "mentions_kubectl_installation", "passed": false, "evidence": "kubectl já estava instalado no ambiente de teste — agente pulou as instruções"},
+        {"text": "generates_k8s_manifests", "passed": true, "evidence": "6 manifestos YAML gerados"},
+        {"text": "uses_loadbalancer_service", "passed": true, "evidence": "LoadBalancer service"},
+        {"text": "generates_setup_script", "passed": true, "evidence": "setup.sh gerado"},
+        {"text": "mentions_metallb_for_loadbalancer", "passed": true, "evidence": "MetalLB com filtro IPv4"},
+        {"text": "imagepullpolicy_never_present", "passed": true, "evidence": "imagePullPolicy: Never"}
+      ],
+      "notes": ["kubectl estava pré-instalado no ambiente de teste — agente corretamente pulou instalação. Eval pode ser dependente de ambiente."]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "first-time-k8s",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.857,
+        "passed": 6,
+        "failed": 1,
+        "total": 7,
+        "time_seconds": 136.7,
+        "tokens": 21823,
+        "tool_calls": 20,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "mentions_kind_installation", "passed": true, "evidence": "Instalação do kind mencionada"},
+        {"text": "mentions_kubectl_installation", "passed": true, "evidence": "Instalação do kubectl mencionada"},
+        {"text": "generates_k8s_manifests", "passed": true, "evidence": "Manifestos gerados"},
+        {"text": "uses_loadbalancer_service", "passed": true, "evidence": "NodePort usado — alternativa válida ao LoadBalancer para kind"},
+        {"text": "generates_setup_script", "passed": true, "evidence": "setup.sh gerado"},
+        {"text": "mentions_metallb_for_loadbalancer", "passed": false, "evidence": "Usou NodePort + kind extraPortMappings ao invés de MetalLB"},
+        {"text": "imagepullpolicy_never_present", "passed": true, "evidence": "imagePullPolicy: Never"}
+      ],
+      "notes": ["Usou NodePort ao invés de MetalLB — funciona mas não expõe IP real de LoadBalancer", "Optou por kind config com extraPortMappings — criativo mas adiciona complexidade"]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 0.952, "stddev": 0.083, "min": 0.857, "max": 1.0},
+      "time_seconds": {"mean": 73.6, "stddev": 23.5, "min": 49.7, "max": 96.6},
+      "tokens": {"mean": 17521, "stddev": 2656, "min": 14558, "max": 19687}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.812, "stddev": 0.041, "min": 0.780, "max": 0.857},
+      "time_seconds": {"mean": 105.3, "stddev": 32.6, "min": 71.6, "max": 136.7},
+      "tokens": {"mean": 18616, "stddev": 4470, "min": 13510, "max": 21823}
+    },
+    "delta": {
+      "pass_rate": "+0.14",
+      "time_seconds": "-31.7",
+      "tokens": "-1095"
+    }
+  },
+  "notes": [
+    "setup_sh_ipv4_filter falha consistentemente sem a skill — este é o bug crítico de IPv6 da sessão real que causou o MetalLB rejeitar o pool",
+    "imagepullpolicy_never falha sem a skill no eval Flask/Redis — IfNotPresent usado, o que quebra deployments no kind",
+    "first-time-k8s (86% em ambos) é o eval menos discriminante — a falha de kubectl é dependente do ambiente de teste",
+    "Com skill é 31.7s mais rápido em média (73.6s vs 105.3s) — skill fornece clareza que reduz exploração e tool calls desperdiçados",
+    "Sem skill usa levemente MAIS tokens (18616 vs 17521) — agentes baseline exploram mais antes de convergir"
+  ]
+}

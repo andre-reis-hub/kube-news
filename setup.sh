@@ -24,7 +24,7 @@ kubectl wait --namespace metallb-system \
 
 echo ""
 echo "==> Configurando IP pool do MetalLB..."
-SUBNET=$(docker network inspect kind -f '{{(index .IPAM.Config 0).Subnet}}')
+SUBNET=$(docker network inspect kind -f '{{range .IPAM.Config}}{{.Subnet}} {{end}}' | tr ' ' '\n' | grep -v ':' | head -1)
 BASE=$(echo "$SUBNET" | cut -d. -f1-2)
 START="${BASE}.255.200"
 END="${BASE}.255.250"

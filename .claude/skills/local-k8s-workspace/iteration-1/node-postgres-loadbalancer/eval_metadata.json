@@ -1,0 +1,47 @@
+{
+  "eval_id": 0,
+  "eval_name": "node-postgres-loadbalancer",
+  "prompt": "Tenho um projeto Node.js com Express e PostgreSQL. O Dockerfile expõe a porta 8080, o docker-compose tem dois serviços: 'app' e 'db' (postgres:14-alpine). As variáveis de ambiente do banco são DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD (valor: Pg#123), DB_DATABASE (valor: kubedevnews), DB_USERNAME (valor: kubedevnews). O app tem endpoints GET /ready (retorna 200 quando pronto) e GET /health. Quero rodar no kubernetes local com kind. Cria todos os manifestos k8s e um setup.sh completo com LoadBalancer usando MetalLB.",
+  "assertions": [
+    {
+      "name": "secret_manifest_present",
+      "description": "Existe um arquivo Secret com as credenciais do banco (não hardcoded nos Deployments)"
+    },
+    {
+      "name": "pvc_manifest_present",
+      "description": "Existe um PersistentVolumeClaim para o volume do postgres"
+    },
+    {
+      "name": "two_deployments_present",
+      "description": "Existem Deployments para app e para postgres"
+    },
+    {
+      "name": "loadbalancer_service_type",
+      "description": "O Service da aplicação é do tipo LoadBalancer"
+    },
+    {
+      "name": "readiness_probe_uses_ready_endpoint",
+      "description": "O readinessProbe da app usa /ready (não /healthz ou /health)"
+    },
+    {
+      "name": "imagepullpolicy_never",
+      "description": "O Deployment da app tem imagePullPolicy: Never"
+    },
+    {
+      "name": "credentials_via_secretkeyref",
+      "description": "Env vars sensíveis usam secretKeyRef, não valores hardcoded"
+    },
+    {
+      "name": "setup_sh_ipv4_filter",
+      "description": "setup.sh filtra a subnet IPv4 do kind (usa grep -v ':' ou equivalente)"
+    },
+    {
+      "name": "setup_sh_metallb_installed",
+      "description": "setup.sh instala o MetalLB e aguarda os pods ficarem prontos"
+    },
+    {
+      "name": "setup_sh_kind_load",
+      "description": "setup.sh executa 'kind load docker-image' para injetar a imagem no cluster"
+    }
+  ]
+}

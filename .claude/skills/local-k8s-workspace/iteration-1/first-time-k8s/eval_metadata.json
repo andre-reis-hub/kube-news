@@ -1,0 +1,35 @@
+{
+  "eval_id": 2,
+  "eval_name": "first-time-k8s",
+  "prompt": "nunca mexi com kubernetes mas quero testar minha api no k8s local antes de subir pra nuvem. tenho um Dockerfile que builda minha app node na porta 3000 e um docker-compose com minha app e um postgres. como faço? precisa instalar alguma coisa? quero conseguir acessar pelo browser",
+  "assertions": [
+    {
+      "name": "mentions_kind_installation",
+      "description": "A resposta instrui o usuário a instalar o kind (com o comando)"
+    },
+    {
+      "name": "mentions_kubectl_installation",
+      "description": "A resposta instrui o usuário a instalar o kubectl"
+    },
+    {
+      "name": "generates_k8s_manifests",
+      "description": "Gera arquivos YAML de manifesto Kubernetes (pelo menos Deployment e Service)"
+    },
+    {
+      "name": "uses_loadbalancer_service",
+      "description": "Usa Service do tipo LoadBalancer para que o usuário acesse pelo browser"
+    },
+    {
+      "name": "generates_setup_script",
+      "description": "Gera um setup.sh ou equivalente que automatiza os passos"
+    },
+    {
+      "name": "mentions_metallb_for_loadbalancer",
+      "description": "Menciona/usa MetalLB para habilitar o LoadBalancer no kind"
+    },
+    {
+      "name": "imagepullpolicy_never_present",
+      "description": "Inclui imagePullPolicy: Never no Deployment da app"
+    }
+  ]
+}

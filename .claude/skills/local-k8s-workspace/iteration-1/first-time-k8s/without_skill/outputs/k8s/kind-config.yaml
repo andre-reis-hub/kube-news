@@ -1,0 +1,11 @@
+# Configuração do cluster kind (Kubernetes in Docker)
+# Essa seção extraPortMappings é ESSENCIAL para acessar pelo browser:
+# ela mapeia a porta 30080 do nó do kind para a porta 8080 da sua máquina.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30080
+        hostPort: 8080
+        protocol: TCP

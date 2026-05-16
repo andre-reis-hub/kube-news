@@ -1,0 +1,26 @@
+{
+  "skill_name": "local-k8s",
+  "evals": [
+    {
+      "id": 0,
+      "name": "node-postgres-loadbalancer",
+      "prompt": "Tenho um projeto Node.js com Express e PostgreSQL. O Dockerfile expõe a porta 8080, o docker-compose tem dois serviços: 'app' e 'db' (postgres:14-alpine). As variáveis de ambiente do banco são DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD. O app tem endpoints GET /ready (retorna 200 quando pronto) e GET /health. Quero rodar no kubernetes local com kind. Cria todos os manifestos k8s e um setup.sh completo com LoadBalancer usando MetalLB.",
+      "expected_output": "Diretório k8s/ com Secret, PVC, 2 Deployments, 2 Services, e setup.sh com kind + MetalLB + IPv4 subnet detection",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "python-flask-redis",
+      "prompt": "Meu projeto é uma API Flask (Python) que usa Redis para cache. O Dockerfile expõe a porta 5000. No docker-compose tenho 'web' (minha app) e 'redis' (redis:7-alpine). A app conecta no Redis via variável REDIS_URL=redis://redis:6379. O Flask tem uma rota /ping que retorna 200 OK. Quero rodar tudo no Kubernetes local com kind. Preciso dos manifestos yaml e de um script pra automatizar tudo, incluindo LoadBalancer.",
+      "expected_output": "Diretório k8s/ com Deployments e Services para app e redis, setup.sh com MetalLB, imagePullPolicy: Never, Service LoadBalancer para a app",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "first-time-k8s",
+      "prompt": "nunca mexi com kubernetes mas quero testar minha api no k8s local antes de subir pra nuvem. tenho um Dockerfile que builda minha app node na porta 3000 e um docker-compose com minha app e um postgres. como faço? precisa instalar alguma coisa? quero conseguir acessar pelo browser",
+      "expected_output": "Instrução de instalação de kind/kubectl, manifestos k8s completos, setup.sh, e acesso via LoadBalancer. Tom didático.",
+      "files": []
+    }
+  ]
+}

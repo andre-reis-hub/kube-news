@@ -1,0 +1,54 @@
+{
+  "eval_name": "python-flask-redis",
+  "variant": "without_skill",
+  "pass_rate": 0.78,
+  "passed": 7,
+  "total": 9,
+  "expectations": [
+    {
+      "text": "flask_app_deployment",
+      "passed": true,
+      "evidence": "Deployment found"
+    },
+    {
+      "text": "redis_deployment",
+      "passed": true,
+      "evidence": "Redis image found"
+    },
+    {
+      "text": "loadbalancer_for_flask",
+      "passed": true,
+      "evidence": "LoadBalancer found"
+    },
+    {
+      "text": "clusterip_for_redis",
+      "passed": true,
+      "evidence": "ClusterIP for Redis (correct)"
+    },
+    {
+      "text": "redis_url_env_var",
+      "passed": true,
+      "evidence": "REDIS_URL pointing to redis service found"
+    },
+    {
+      "text": "readiness_probe_uses_ping",
+      "passed": true,
+      "evidence": "/ping probe found"
+    },
+    {
+      "text": "imagepullpolicy_never",
+      "passed": false,
+      "evidence": "Missing imagePullPolicy: Never"
+    },
+    {
+      "text": "setup_sh_metallb_installed",
+      "passed": true,
+      "evidence": "MetalLB found"
+    },
+    {
+      "text": "setup_sh_ipv4_filter",
+      "passed": false,
+      "evidence": "No IPv4 filter"
+    }
+  ]
+}

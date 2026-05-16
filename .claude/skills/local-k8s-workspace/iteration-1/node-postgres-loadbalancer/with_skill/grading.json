@@ -1,0 +1,59 @@
+{
+  "eval_name": "node-postgres-loadbalancer",
+  "variant": "with_skill",
+  "pass_rate": 1.0,
+  "passed": 10,
+  "total": 10,
+  "expectations": [
+    {
+      "text": "secret_manifest_present",
+      "passed": true,
+      "evidence": "Kind: Secret + password key found"
+    },
+    {
+      "text": "pvc_manifest_present",
+      "passed": true,
+      "evidence": "PVC manifest found"
+    },
+    {
+      "text": "two_deployments_present",
+      "passed": true,
+      "evidence": "Found 2 Deployment(s)"
+    },
+    {
+      "text": "loadbalancer_service_type",
+      "passed": true,
+      "evidence": "LoadBalancer found"
+    },
+    {
+      "text": "readiness_probe_uses_ready_endpoint",
+      "passed": true,
+      "evidence": "/ready probe found"
+    },
+    {
+      "text": "imagepullpolicy_never",
+      "passed": true,
+      "evidence": "imagePullPolicy: Never found"
+    },
+    {
+      "text": "credentials_via_secretkeyref",
+      "passed": true,
+      "evidence": "secretKeyRef found"
+    },
+    {
+      "text": "setup_sh_ipv4_filter",
+      "passed": true,
+      "evidence": "IPv4 filter (grep -v ':') found in setup.sh"
+    },
+    {
+      "text": "setup_sh_metallb_installed",
+      "passed": true,
+      "evidence": "MetalLB reference found"
+    },
+    {
+      "text": "setup_sh_kind_load",
+      "passed": true,
+      "evidence": "kind load docker-image found"
+    }
+  ]
+}

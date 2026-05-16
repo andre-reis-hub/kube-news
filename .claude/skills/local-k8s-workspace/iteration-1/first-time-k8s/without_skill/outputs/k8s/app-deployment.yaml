@@ -2,6 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kube-news
+  namespace: kube-news
+  labels:
+    app: kube-news
 spec:
   replicas: 1
   selector:
@@ -14,12 +17,16 @@ spec:
     spec:
       containers:
         - name: kube-news
+          # Nome da imagem que você vai buildar localmente com o kind
+          # Veja as instruções em response.md para fazer o build correto
           image: kube-news:latest
+          # "Never" garante que o kind use a imagem local, não tente baixar do Docker Hub
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
           env:
             - name: DB_HOST
+              # "postgres" é o nome do Service do banco — o k8s resolve automaticamente
               value: postgres
             - name: DB_PORT
               value: "5432"
@@ -44,3 +51,10 @@ spec:
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
