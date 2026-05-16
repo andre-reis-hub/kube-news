@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:aws.amazon.com)",
+      "WebSearch",
+      "WebFetch(domain:b0.gone.aws)",
+      "WebFetch(domain:pricing.us-east-1.amazonaws.com)",
+      "WebFetch(domain:cloudprice.net)",
+      "WebFetch(domain:instances.vantage.sh)",
+      "WebFetch(domain:go-cloud.io)",
+      "WebFetch(domain:cloudchipr.com)"
+    ]
+  }
+}
