@@ -8,7 +8,15 @@
       "WebFetch(domain:cloudprice.net)",
       "WebFetch(domain:instances.vantage.sh)",
       "WebFetch(domain:go-cloud.io)",
-      "WebFetch(domain:cloudchipr.com)"
+      "WebFetch(domain:cloudchipr.com)",
+      "Bash(chmod +x *)",
+      "Bash(kubectl get nodes *)",
+      "Bash(kind get *)",
+      "Bash(docker version *)",
+      "Bash(curl -Lo /tmp/kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64)",
+      "Bash(sudo mv /tmp/kind /usr/local/bin/kind)",
+      "Bash(kind version *)",
+      "Bash(echo \"kind instalado: $\\(kind version\\)\")"
     ]
   }
 }
