@@ -18,7 +18,11 @@
       "Bash(kind version *)",
       "Bash(echo \"kind instalado: $\\(kind version\\)\")",
       "Bash(python3 grade.py)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(kubectl wait *)",
+      "Bash(kubectl get *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080)",
+      "Bash(kubectl apply *)"
     ]
   }
 }

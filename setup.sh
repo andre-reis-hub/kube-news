@@ -2,7 +2,7 @@
 set -e
 
 echo "==> Criando cluster kind..."
-kind create cluster
+kind create cluster --config k8s/kind-config.yaml
 
 echo ""
 echo "==> Buildando imagem Docker..."
@@ -51,7 +51,7 @@ EOF
 
 echo ""
 echo "==> Aplicando manifestos da aplicação..."
-kubectl apply -f k8s/
+ls k8s/*.yaml | grep -v kind-config.yaml | xargs kubectl apply -f
 
 echo ""
 echo "==> Aguardando pods ficarem prontos..."
@@ -64,4 +64,5 @@ kubectl get svc kube-news
 
 EXTERNAL_IP=$(kubectl get svc kube-news -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 echo ""
-echo "Acesse: http://${EXTERNAL_IP}"
+echo "Acesse (Windows/WSL2): http://localhost:8080"
+echo "Acesse (MetalLB IP):   http://${EXTERNAL_IP}"

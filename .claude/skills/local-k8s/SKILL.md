@@ -40,6 +40,7 @@ For each service in docker-compose, determine:
 **Naming convention**: one file per resource type per service.
 ```
 k8s/
+├── kind-config.yaml        ← kind cluster config (NOT a K8s manifest — exclude from kubectl apply)
 ├── postgres-secret.yaml
 ├── postgres-pvc.yaml
 ├── postgres-deployment.yaml
@@ -84,7 +85,33 @@ For **database** deployments:
 
 ### Services
 - Database: `ClusterIP` (internal only) — port matches the DB default (5432 for Postgres)
-- App: `LoadBalancer` — map port 80 → container port
+- App: `LoadBalancer` — map port 80 → container port, **always set a fixed `nodePort`** (e.g. 30095) that matches the `kind-config.yaml` `extraPortMappings`
+
+```yaml
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30095   # must match containerPort in kind-config.yaml
+```
+
+### kind-config.yaml — access from Windows/WSL2 without port-forward
+
+Create `k8s/kind-config.yaml` with `extraPortMappings` so `localhost:<hostPort>` works directly from the Windows browser:
+
+```yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30095   # must match nodePort in app-service.yaml
+        hostPort: 8080
+        protocol: TCP
+```
+
+Create the cluster with: `kind create cluster --config k8s/kind-config.yaml`
 
 ## Step 4 — Write setup.sh
 
@@ -94,8 +121,8 @@ The script must run in this exact order (dependencies matter):
 #!/bin/bash
 set -e
 
-# 1. Create cluster
-kind create cluster
+# 1. Create cluster (with extraPortMappings for localhost access)
+kind create cluster --config k8s/kind-config.yaml
 
 # 2. Build and load image (before MetalLB to save time)
 docker build -t <app-name>:latest .
@@ -136,15 +163,16 @@ metadata:
   namespace: metallb-system
 EOF
 
-# 5. Apply manifests
-kubectl apply -f k8s/
+# 5. Apply manifests (exclude kind-config.yaml — it's not a K8s resource)
+ls k8s/*.yaml | grep -v kind-config.yaml | xargs kubectl apply -f
 
 # 6. Wait and report
 kubectl wait --for=condition=ready pod --selector=app=<db-label> --timeout=120s
 kubectl wait --for=condition=ready pod --selector=app=<app-label> --timeout=120s
 
 EXTERNAL_IP=$(kubectl get svc <app-service-name> -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-echo "Acesse: http://${EXTERNAL_IP}"
+echo "Acesse (Windows/WSL2): http://localhost:8080"
+echo "Acesse (MetalLB IP):   http://${EXTERNAL_IP}"
 ```
 
 Make the script executable (`chmod +x setup.sh`).
@@ -182,6 +210,8 @@ chmod +x /tmp/kubectl && mv /tmp/kubectl ~/.local/bin/kubectl
 | readinessProbe always failing | Wrong endpoint path | Read actual route definitions in source code |
 | Image not found in cluster | Forgot `kind load` | Always run `kind load docker-image` after `docker build` |
 | `kubectl` connects to wrong cluster | Old kubeconfig | `kind` sets context automatically; verify with `kubectl config current-context` |
+| `kubectl apply -f k8s/` fails with "no matches for kind Cluster" | `kind-config.yaml` não é um manifesto K8s | Use `ls k8s/*.yaml \| grep -v kind-config.yaml \| xargs kubectl apply -f` |
+| `localhost:8080` recusado no Windows | `extraPortMappings` ausente ou `nodePort` divergente | `nodePort` no Service e `containerPort` no `kind-config.yaml` devem ser o mesmo valor |
 
 ## Verifying the deployment
 
