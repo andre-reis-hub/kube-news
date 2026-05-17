@@ -292,6 +292,40 @@ terraform destroy
 
 ---
 
+## Cluster Autoscaler
+
+O Cluster Autoscaler é instalado automaticamente via Helm durante o `terraform apply`. Ele monitora pods em estado `Pending` por falta de recursos e ajusta o número de nodes do ASG automaticamente.
+
+### Como funciona
+
+- **Scale-up**: quando há pods `Pending` por falta de CPU/memória, o Cluster Autoscaler adiciona nodes (até `node_max_size`)
+- **Scale-down**: quando um node está subutilizado por mais de 10 minutos, o Cluster Autoscaler o remove (respeitando `node_min_size = 1`)
+- **Autodiscovery**: o Cluster Autoscaler descobre o ASG pelas tags `k8s.io/cluster-autoscaler/enabled` e `k8s.io/cluster-autoscaler/<cluster-name>` adicionadas no node group
+- **IRSA**: o pod usa uma IAM Role específica via OIDC — sem credenciais estáticas
+
+### Verificar instalação
+
+```bash
+# Pod deve estar em Running
+kubectl get pods -n kube-system | grep cluster-autoscaler
+
+# Logs devem mostrar o ASG descoberto sem erros
+kubectl logs -n kube-system deployment/cluster-autoscaler-aws-cluster-autoscaler | grep -i "found\|error"
+```
+
+### Ajustar limites de escala
+
+```bash
+# Edite terraform.tfvars:
+node_min_size     = 1
+node_max_size     = 3
+node_desired_size = 1
+
+terraform apply
+```
+
+---
+
 ## Próximos passos sugeridos
 
 1. **Backend remoto** — descomente o bloco `backend "s3"` em `versions.tf` para salvar o state na AWS, permitindo trabalho em time

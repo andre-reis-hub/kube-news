@@ -44,6 +44,11 @@ module "eks" {
       labels = {
         role = "general"
       }
+
+      tags = {
+        "k8s.io/cluster-autoscaler/enabled"             = "true"
+        "k8s.io/cluster-autoscaler/${var.cluster_name}" = "owned"
+      }
     }
   }
 

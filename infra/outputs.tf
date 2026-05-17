@@ -37,3 +37,8 @@ output "configure_kubectl" {
   description = "Comando para configurar o kubectl apontando para este cluster"
   value       = "aws eks update-kubeconfig --region ${var.aws_region} --name ${module.eks.cluster_name}"
 }
+
+output "cluster_autoscaler_role_arn" {
+  description = "ARN da IAM Role IRSA usada pelo Cluster Autoscaler"
+  value       = aws_iam_role.cluster_autoscaler.arn
+}
