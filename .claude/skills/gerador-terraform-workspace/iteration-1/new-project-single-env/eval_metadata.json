@@ -1,0 +1,16 @@
+{
+  "eval_id": 1,
+  "eval_name": "new-project-single-env",
+  "prompt": "cria um projeto terraform pra mim chamado minha-infra com ambiente production",
+  "assertions": [
+    "O diretório environments/production/ foi criado com os arquivos versions.tf, main.tf, variables.tf, outputs.tf e terraform.tfvars.example",
+    "O arquivo versions.tf contém required_version com uma versão real do Terraform no formato = X.Y.Z",
+    "O arquivo versions.tf contém o bloco aws com source = hashicorp/aws e uma versão real do provider no formato = A.B.C",
+    "O arquivo .gitignore existe e inclui .terraform/ e *.tfvars",
+    "O arquivo .terraform-version existe e contém apenas o número de versão do Terraform",
+    "O arquivo modules/README.md existe",
+    "O arquivo TERRAFORM_SETUP.md existe e contém as versões usadas e os primeiros passos",
+    "A versão do Terraform usada é igual ou superior a 1.10.0 (versão recente real, não de treinamento)",
+    "A versão do AWS provider usada é igual ou superior a 6.0.0 (versão recente real, não de treinamento)"
+  ]
+}

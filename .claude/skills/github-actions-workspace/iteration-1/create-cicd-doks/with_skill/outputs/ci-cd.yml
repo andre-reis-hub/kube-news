@@ -1,0 +1,61 @@
+name: CI/CD — Build, Push e Deploy no DOKS
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  IMAGE: ${{ secrets.DOCR_ENDPOINT }}/kube-news
+
+jobs:
+  build-and-deploy:
+    name: Build, Push e Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+
+      - name: Instalar doctl
+        uses: digitalocean/action-doctl@v2.5.2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Login no Container Registry
+        uses: docker/login-action@v4.1.0
+        with:
+          registry: registry.digitalocean.com
+          username: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          password: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Build e Push da imagem
+        uses: docker/build-push-action@v7.1.0
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:${{ github.run_number }}
+
+      - name: Configurar kubectl para o DOKS
+        run: doctl kubernetes cluster kubeconfig save ${{ secrets.DOKS_CLUSTER_NAME }}
+
+      - name: Aplicar manifestos Kubernetes
+        run: |
+          kubectl apply -f k8s/postgres-secret.yaml
+          kubectl apply -f k8s/postgres-pvc.yaml
+          kubectl apply -f k8s/postgres-deployment.yaml
+          kubectl apply -f k8s/postgres-service.yaml
+          kubectl apply -f k8s/app-deployment.yaml
+          kubectl apply -f k8s/app-service.yaml
+
+      - name: Atualizar imagem no Deployment
+        run: |
+          kubectl set image deployment/kube-news \
+            kube-news=${{ env.IMAGE }}:${{ github.run_number }}
+
+      - name: Aguardar rollout
+        run: kubectl rollout status deployment/kube-news --timeout=120s

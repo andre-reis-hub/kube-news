@@ -1,0 +1,13 @@
+{
+  "eval_id": 2,
+  "eval_name": "new-project-multi-env",
+  "prompt": "quero estrutura terraform para o projeto api-gateway com ambientes dev e staging",
+  "assertions": [
+    "O diretório environments/dev/ foi criado",
+    "O diretório environments/staging/ foi criado",
+    "Ambos os ambientes têm o arquivo versions.tf com versões idênticas",
+    "O TERRAFORM_SETUP.md menciona os dois ambientes (dev e staging)",
+    "O arquivo .gitignore inclui *.tfvars mas exclui *.tfvars.example",
+    "A versão no .terraform-version é a mesma do required_version no versions.tf"
+  ]
+}

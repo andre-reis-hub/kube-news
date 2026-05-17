@@ -1,0 +1,52 @@
+{
+  "skill_name": "github-actions",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "cria um workflow de CI/CD para build e push de imagem Docker no DigitalOcean Container Registry com deploy no DOKS",
+      "expected_output": "Arquivo .github/workflows/ci-cd.yml gerado com: versões reais das actions buscadas via GitHub API, github.run_number como tag de imagem, permissions: explícito, timeout-minutes em todo job, secrets via ${{ secrets.* }}, actions oficiais (digitalocean/action-doctl, docker/login-action, docker/build-push-action) em vez de scripts manuais",
+      "files": [],
+      "assertions": [
+        "O arquivo .github/workflows/ foi criado com extensão .yml ou .yaml",
+        "A tag de imagem usa github.run_number e não github.sha ou latest",
+        "O workflow tem bloco permissions: explícito",
+        "Todo job tem timeout-minutes definido",
+        "Nenhum secret ou credencial está hardcoded — todos usam ${{ secrets.* }}",
+        "Usa digitalocean/action-doctl em vez de curl manual para instalar doctl",
+        "As versões das actions são exatas (ex: @v4.2.2) e não genéricas (@v4, @main, @latest)",
+        "Usa docker/login-action em vez de run: docker login",
+        "A skill consultou o context7 antes de gerar o arquivo"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "audita o arquivo .github/workflows/ci-cd.yml e corrige as violations",
+      "expected_output": "Relatório listando as 5 violations do arquivo de teste (R1: sha→run_number, R2: @main, R2: versão genérica doctl, R3: sem permissions, R4: sem timeout, R6: scripts manuais para doctl e docker), diff proposto, e após confirmação o arquivo corrigido",
+      "files": ["evals/files/workflow-com-violations.yml"],
+      "assertions": [
+        "A skill identificou a violation R1 (github.sha e latest em vez de run_number)",
+        "A skill identificou a violation R2 (actions/checkout@main — versão inválida)",
+        "A skill identificou a violation R3 (ausência de bloco permissions:)",
+        "A skill identificou a violation R4 (ausência de timeout-minutes no job)",
+        "A skill identificou a violation R6 (curl manual para instalar doctl)",
+        "A skill apresentou o relatório de violations antes de editar qualquer arquivo",
+        "O arquivo corrigido usa github.run_number",
+        "O arquivo corrigido tem permissions: e timeout-minutes"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "cria um workflow que roda em pull_request fazendo lint e testes no Node.js",
+      "expected_output": "Arquivo .github/workflows/ci.yml com trigger pull_request, actions/setup-node com versão real, permissions read-only, timeout adequado, sem hardcoded values",
+      "files": [],
+      "assertions": [
+        "O trigger do workflow inclui pull_request",
+        "Usa actions/setup-node com versão exata buscada via API",
+        "permissions: está presente e é read-only (contents: read)",
+        "timeout-minutes definido no job",
+        "Não há scripts manuais para instalar Node — usa actions/setup-node",
+        "A versão do Node.js é configurável via with: node-version"
+      ]
+    }
+  ]
+}

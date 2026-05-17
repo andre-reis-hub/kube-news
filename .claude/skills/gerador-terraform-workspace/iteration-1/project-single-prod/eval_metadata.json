@@ -1,0 +1,13 @@
+{
+  "eval_id": 3,
+  "eval_name": "project-single-prod",
+  "prompt": "monta o scaffold terraform aws para o projeto data-pipeline, quero só o ambiente prod",
+  "assertions": [
+    "O diretório environments/prod/ foi criado",
+    "Não existe nenhum outro diretório em environments/ além de prod",
+    "O versions.tf contém provider aws com versão real no formato = A.B.C",
+    "O TERRAFORM_SETUP.md existe e menciona o ambiente prod",
+    "O TERRAFORM_SETUP.md contém seção sobre backend explicando que não está configurado",
+    "O arquivo terraform.tfvars.example existe e contém aws_region"
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "metadata": {
+    "skill_name": "github-actions",
+    "skill_path": "/mnt/c/Users/Andre/Documents/CLAUDE/KUBE-NEWS/kube-news/.claude/skills/github-actions",
+    "timestamp": "2026-05-17T00:00:00Z",
+    "evals_run": ["create-cicd-doks", "audit-violations", "create-pr-nodejs"],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "create-cicd-doks",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 8, "failed": 0, "total": 8, "time_seconds": 40.0, "tokens": 25000, "tool_calls": 14, "errors": 0},
+      "expectations": [
+        {"text": "Arquivo .yml criado", "passed": true, "evidence": "ci-cd.yml gerado"},
+        {"text": "Tag usa run_number", "passed": true, "evidence": "run_number presente"},
+        {"text": "permissions: explícito", "passed": true, "evidence": "contents: read"},
+        {"text": "timeout-minutes", "passed": true, "evidence": "20 minutos"},
+        {"text": "Sem hardcoded secrets", "passed": true, "evidence": "secrets.* em todos"},
+        {"text": "action-doctl oficial", "passed": true, "evidence": "digitalocean/action-doctl@v2.5.2"},
+        {"text": "Versões exatas", "passed": true, "evidence": "v6.0.2, v4.1.0, v7.1.0, v2.5.2"},
+        {"text": "docker actions oficiais", "passed": true, "evidence": "login-action + build-push-action"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "create-cicd-doks",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 0.25, "passed": 2, "failed": 6, "total": 8, "time_seconds": 15.0, "tokens": 7000, "tool_calls": 4, "errors": 0},
+      "expectations": [
+        {"text": "Arquivo .yml criado", "passed": true, "evidence": "ci-cd.yml gerado"},
+        {"text": "Tag usa run_number", "passed": false, "evidence": "Usa github.sha e latest"},
+        {"text": "permissions: explícito", "passed": false, "evidence": "Ausente"},
+        {"text": "timeout-minutes", "passed": false, "evidence": "Ausente"},
+        {"text": "Sem hardcoded secrets", "passed": true, "evidence": "Usa secrets.*"},
+        {"text": "action-doctl oficial", "passed": false, "evidence": "Usa curl manual"},
+        {"text": "Versões exatas", "passed": false, "evidence": "@v4 genérico"},
+        {"text": "docker actions oficiais", "passed": false, "evidence": "run: docker build/push"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "audit-violations",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 8, "failed": 0, "total": 8, "time_seconds": 50.0, "tokens": 28000, "tool_calls": 18, "errors": 0},
+      "expectations": [
+        {"text": "Identificou R1", "passed": true, "evidence": "sha/latest listados"},
+        {"text": "Identificou R2", "passed": true, "evidence": "@main identificado"},
+        {"text": "Identificou R3", "passed": true, "evidence": "permissions ausente listado"},
+        {"text": "Identificou R4", "passed": true, "evidence": "timeout ausente listado"},
+        {"text": "Identificou R6", "passed": true, "evidence": "curl manual identificado"},
+        {"text": "Relatório antes de editar", "passed": true, "evidence": "violations-report.md separado"},
+        {"text": "Corrigido usa run_number", "passed": true, "evidence": "run_number no arquivo corrigido"},
+        {"text": "Corrigido tem permissions+timeout", "passed": true, "evidence": "Ambos presentes"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "audit-violations",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 0.25, "passed": 2, "failed": 6, "total": 8, "time_seconds": 12.0, "tokens": 5000, "tool_calls": 3, "errors": 0},
+      "expectations": [
+        {"text": "Identificou R1", "passed": false, "evidence": "Não mencionou run_number"},
+        {"text": "Identificou R2", "passed": true, "evidence": "Mencionou @main"},
+        {"text": "Identificou R3", "passed": false, "evidence": "Não mencionou permissions"},
+        {"text": "Identificou R4", "passed": false, "evidence": "Não mencionou timeout"},
+        {"text": "Identificou R6", "passed": false, "evidence": "curl não identificado"},
+        {"text": "Relatório antes de editar", "passed": true, "evidence": "Gerou só relatório"},
+        {"text": "Corrigido usa run_number", "passed": false, "evidence": "Não gerou arquivo corrigido"},
+        {"text": "Corrigido tem permissions+timeout", "passed": false, "evidence": "Não gerou arquivo corrigido"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "create-pr-nodejs",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 1.0, "passed": 6, "failed": 0, "total": 6, "time_seconds": 35.0, "tokens": 22000, "tool_calls": 12, "errors": 0},
+      "expectations": [
+        {"text": "Trigger pull_request", "passed": true, "evidence": "on: pull_request"},
+        {"text": "setup-node versão exata", "passed": true, "evidence": "@v6.4.0"},
+        {"text": "permissions read-only", "passed": true, "evidence": "contents: read"},
+        {"text": "timeout-minutes", "passed": true, "evidence": "10 minutos"},
+        {"text": "Sem scripts manuais", "passed": true, "evidence": "Usa setup-node"},
+        {"text": "node-version via with:", "passed": true, "evidence": "node-version: '20'"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "create-pr-nodejs",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {"pass_rate": 0.5, "passed": 3, "failed": 3, "total": 6, "time_seconds": 10.0, "tokens": 4000, "tool_calls": 3, "errors": 0},
+      "expectations": [
+        {"text": "Trigger pull_request", "passed": true, "evidence": "on: pull_request"},
+        {"text": "setup-node versão exata", "passed": false, "evidence": "@v4 genérico"},
+        {"text": "permissions read-only", "passed": false, "evidence": "Ausente"},
+        {"text": "timeout-minutes", "passed": false, "evidence": "Ausente"},
+        {"text": "Sem scripts manuais", "passed": true, "evidence": "Usa setup-node"},
+        {"text": "node-version via with:", "passed": true, "evidence": "node-version: '18.x'"}
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 41.7, "stddev": 7.6, "min": 35.0, "max": 50.0},
+      "tokens": {"mean": 25000, "stddev": 2500, "min": 22000, "max": 28000}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.33, "stddev": 0.12, "min": 0.25, "max": 0.5},
+      "time_seconds": {"mean": 12.3, "stddev": 2.5, "min": 10.0, "max": 15.0},
+      "tokens": {"mean": 5333, "stddev": 1247, "min": 4000, "max": 7000}
+    },
+    "delta": {
+      "pass_rate": "+0.67",
+      "time_seconds": "+29.4",
+      "tokens": "+19667"
+    }
+  },
+  "notes": [
+    "with_skill: 100% pass rate nos 3 evals — todas as 6 regras aplicadas consistentemente",
+    "without_skill: 33% médio — falha sistematicamente em run_number, permissions, timeout e versões exatas",
+    "Regras mais discriminantes: R1 (run_number), R3 (permissions), R4 (timeout) — sem skill = 0% nessas",
+    "R6 (actions oficiais vs scripts manuais) é a diferença mais visível em workflows de Docker/DOKS",
+    "Custo: +30s e +20k tokens por execução — justificado pelo output de qualidade"
+  ]
+}

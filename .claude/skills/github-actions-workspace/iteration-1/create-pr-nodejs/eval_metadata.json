@@ -1,0 +1,13 @@
+{
+  "eval_id": 3,
+  "eval_name": "create-pr-nodejs",
+  "prompt": "cria um workflow que roda em pull_request fazendo lint e testes no Node.js",
+  "assertions": [
+    "O trigger inclui pull_request",
+    "Usa actions/setup-node com versão exata",
+    "permissions: está presente e é read-only",
+    "timeout-minutes definido no job",
+    "Não há scripts manuais para instalar Node — usa actions/setup-node",
+    "node-version configurável via with: node-version"
+  ]
+}

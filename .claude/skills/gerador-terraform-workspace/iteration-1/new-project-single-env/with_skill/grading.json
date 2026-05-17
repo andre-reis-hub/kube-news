@@ -1,0 +1,55 @@
+{
+  "expectations": [
+    {
+      "text": "O diretório environments/production/ foi criado com os arquivos versions.tf, main.tf, variables.tf, outputs.tf e terraform.tfvars.example",
+      "passed": true,
+      "evidence": "Todos os 5 arquivos encontrados em outputs/minha-infra/environments/production/"
+    },
+    {
+      "text": "O arquivo versions.tf contém required_version com uma versão real do Terraform no formato = X.Y.Z",
+      "passed": true,
+      "evidence": "required_version = \"= 1.15.3\" encontrado em versions.tf"
+    },
+    {
+      "text": "O arquivo versions.tf contém o bloco aws com source = hashicorp/aws e uma versão real do provider no formato = A.B.C",
+      "passed": true,
+      "evidence": "version = \"= 6.45.0\" com source = \"hashicorp/aws\" encontrado em versions.tf"
+    },
+    {
+      "text": "O arquivo .gitignore existe e inclui .terraform/ e *.tfvars",
+      "passed": true,
+      "evidence": ".gitignore contém .terraform/, *.tfvars e !*.tfvars.example"
+    },
+    {
+      "text": "O arquivo .terraform-version existe e contém apenas o número de versão do Terraform",
+      "passed": true,
+      "evidence": ".terraform-version contém '1.15.3'"
+    },
+    {
+      "text": "O arquivo modules/README.md existe",
+      "passed": true,
+      "evidence": "modules/README.md encontrado com instruções de uso"
+    },
+    {
+      "text": "O arquivo TERRAFORM_SETUP.md existe e contém as versões usadas e os primeiros passos",
+      "passed": true,
+      "evidence": "TERRAFORM_SETUP.md contém tabela de versões e seção 'Primeiros passos'"
+    },
+    {
+      "text": "A versão do Terraform usada é igual ou superior a 1.10.0 (versão recente real, não de treinamento)",
+      "passed": true,
+      "evidence": "Versão 1.15.3 obtida via WebFetch em checkpoint-api.hashicorp.com"
+    },
+    {
+      "text": "A versão do AWS provider usada é igual ou superior a 6.0.0 (versão recente real, não de treinamento)",
+      "passed": true,
+      "evidence": "Versão 6.45.0 obtida via WebFetch em registry.terraform.io"
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "failed": 0,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

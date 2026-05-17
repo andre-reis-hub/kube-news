@@ -1,0 +1,13 @@
+{
+  "expectations": [
+    {"text": "Identificou R1: github.sha/latest → run_number", "passed": true, "evidence": "violations-report.md lista R1 com linhas exatas"},
+    {"text": "Identificou R2: actions/checkout@main", "passed": true, "evidence": "R2 listado: '@main — versão inválida'"},
+    {"text": "Identificou R3: sem permissions:", "passed": true, "evidence": "R3 listado no relatório"},
+    {"text": "Identificou R4: sem timeout-minutes", "passed": true, "evidence": "R4 listado no relatório"},
+    {"text": "Identificou R6: curl manual para doctl", "passed": true, "evidence": "R6 listado com ação de substituição"},
+    {"text": "Relatório antes de editar o arquivo", "passed": true, "evidence": "violations-report.md gerado separado do arquivo corrigido"},
+    {"text": "Arquivo corrigido usa github.run_number", "passed": true, "evidence": "ci-cd-corrigido.yml usa run_number"},
+    {"text": "Arquivo corrigido tem permissions: e timeout-minutes", "passed": true, "evidence": "Ambos presentes no arquivo corrigido"}
+  ],
+  "summary": {"passed": 8, "failed": 0, "total": 8, "pass_rate": 1.0}
+}

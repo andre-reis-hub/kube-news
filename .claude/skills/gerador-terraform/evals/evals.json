@@ -1,0 +1,50 @@
+{
+  "skill_name": "gerador-terraform",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "cria um projeto terraform pra mim chamado minha-infra com ambiente production",
+      "expected_output": "Projeto gerado em ./minha-infra/ com environments/production/ contendo versions.tf (versões exatas do Terraform CLI e AWS provider buscadas de fontes oficiais), main.tf, variables.tf, outputs.tf, terraform.tfvars.example, além de .gitignore, .terraform-version, modules/README.md e TERRAFORM_SETUP.md com relatório completo.",
+      "files": [],
+      "assertions": [
+        "O diretório minha-infra/environments/production/ foi criado com os arquivos versions.tf, main.tf, variables.tf, outputs.tf e terraform.tfvars.example",
+        "O arquivo versions.tf contém required_version com uma versão real do Terraform (não placeholder) no formato = X.Y.Z",
+        "O arquivo versions.tf contém o bloco aws com source = hashicorp/aws e uma versão real do provider no formato = A.B.C",
+        "O arquivo .gitignore existe e inclui .terraform/ e *.tfvars",
+        "O arquivo .terraform-version existe e contém apenas o número de versão do Terraform",
+        "O arquivo modules/README.md existe",
+        "O arquivo TERRAFORM_SETUP.md existe e contém as versões usadas e os primeiros passos",
+        "A skill consultou o context7 para obter a documentação do Terraform e/ou AWS provider antes de gerar os arquivos",
+        "A skill buscou as versões atuais em fontes externas (checkpoint-api ou registry.terraform.io) em vez de usar versões fixas de memória"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "quero estrutura terraform para o projeto api-gateway com ambientes dev e staging",
+      "expected_output": "Projeto gerado em ./api-gateway/ com environments/dev/ e environments/staging/, cada um com seu próprio versions.tf (mesmas versões em ambos), main.tf, variables.tf, outputs.tf e terraform.tfvars.example. Relatório TERRAFORM_SETUP.md lista os dois ambientes.",
+      "files": [],
+      "assertions": [
+        "O diretório api-gateway/environments/dev/ foi criado",
+        "O diretório api-gateway/environments/staging/ foi criado",
+        "Ambos os ambientes têm o arquivo versions.tf com versões idênticas",
+        "O TERRAFORM_SETUP.md menciona os dois ambientes (dev e staging)",
+        "O arquivo .gitignore inclui *.tfvars mas exclui *.tfvars.example",
+        "A versão no .terraform-version é a mesma do required_version no versions.tf"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "monta o scaffold terraform aws para o projeto data-pipeline, quero só o ambiente prod",
+      "expected_output": "Projeto gerado em ./data-pipeline/ com apenas environments/prod/. Arquivos corretos com versões reais. terraform fmt executado. Relatório gerado.",
+      "files": [],
+      "assertions": [
+        "O diretório data-pipeline/environments/prod/ foi criado",
+        "Não existe nenhum outro diretório em environments/ além de prod",
+        "O versions.tf contém provider aws com versão real no formato = A.B.C",
+        "O TERRAFORM_SETUP.md existe e menciona o ambiente prod",
+        "O TERRAFORM_SETUP.md contém seção sobre backend explicando que não está configurado",
+        "O arquivo terraform.tfvars.example existe e contém aws_region"
+      ]
+    }
+  ]
+}

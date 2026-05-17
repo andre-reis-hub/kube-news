@@ -1,0 +1,11 @@
+{
+  "expectations": [
+    {"text": "Trigger inclui pull_request", "passed": true, "evidence": "on: pull_request: presente"},
+    {"text": "Usa actions/setup-node com versão exata", "passed": false, "evidence": "actions/setup-node@v4 — versão major genérica, não exata"},
+    {"text": "permissions: read-only", "passed": false, "evidence": "Sem bloco permissions:"},
+    {"text": "timeout-minutes no job", "passed": false, "evidence": "Sem timeout-minutes"},
+    {"text": "Sem scripts manuais para Node", "passed": true, "evidence": "Usa actions/setup-node corretamente"},
+    {"text": "node-version via with:", "passed": true, "evidence": "with: node-version: '18.x'"}
+  ],
+  "summary": {"passed": 3, "failed": 3, "total": 6, "pass_rate": 0.5}
+}

@@ -1,0 +1,49 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+# R3: permissions explícito adicionado
+permissions:
+  contents: read
+
+env:
+  IMAGE: registry.digitalocean.com/meu-registry/app
+
+jobs:
+  build-and-deploy:
+    name: Build, Push e Deploy
+    runs-on: ubuntu-latest
+    # R4: timeout-minutes adicionado
+    timeout-minutes: 20
+
+    steps:
+      # R2: actions/checkout@main → versão exata via GitHub API
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+
+      # R6: curl manual para doctl → digitalocean/action-doctl (action oficial)
+      - name: Instalar doctl
+        uses: digitalocean/action-doctl@v2.5.2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Login no registry
+        run: doctl registry login --expiry-seconds 600
+
+      # R6: docker build/push manual → docker/build-push-action (action oficial)
+      # R1: github.sha e latest → github.run_number
+      - name: Build e Push da imagem
+        uses: docker/build-push-action@v7.1.0
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE }}:${{ github.run_number }}
+
+      - name: Deploy no cluster
+        run: |
+          doctl kubernetes cluster kubeconfig save meu-cluster
+          kubectl set image deployment/app app=${{ env.IMAGE }}:${{ github.run_number }}
+          kubectl rollout status deployment/app --timeout=120s

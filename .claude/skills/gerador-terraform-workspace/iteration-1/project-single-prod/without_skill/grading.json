@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "O diretório environments/prod/ foi criado",
+      "passed": true,
+      "evidence": "environments/prod/ com arquivos básicos encontrados"
+    },
+    {
+      "text": "Não existe nenhum outro diretório em environments/ além de prod",
+      "passed": true,
+      "evidence": "Apenas environments/prod/ foi criado"
+    },
+    {
+      "text": "O versions.tf contém provider aws com versão real no formato = A.B.C",
+      "passed": false,
+      "evidence": "versions.tf usa '~> 5.0' (constraint loose, versão desatualizada) em vez de versão exata real"
+    },
+    {
+      "text": "O TERRAFORM_SETUP.md existe e menciona o ambiente prod",
+      "passed": false,
+      "evidence": "TERRAFORM_SETUP.md não foi gerado"
+    },
+    {
+      "text": "O TERRAFORM_SETUP.md contém seção sobre backend explicando que não está configurado",
+      "passed": false,
+      "evidence": "TERRAFORM_SETUP.md não foi gerado"
+    },
+    {
+      "text": "O arquivo terraform.tfvars.example existe e contém aws_region",
+      "passed": true,
+      "evidence": "terraform.tfvars.example contém 'aws_region = us-east-1'"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 3,
+    "total": 6,
+    "pass_rate": 0.5
+  }
+}

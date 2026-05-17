@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "O diretório environments/dev/ foi criado",
+      "passed": true,
+      "evidence": "environments/dev/ com todos os arquivos encontrados"
+    },
+    {
+      "text": "O diretório environments/staging/ foi criado",
+      "passed": true,
+      "evidence": "environments/staging/ com todos os arquivos encontrados"
+    },
+    {
+      "text": "Ambos os ambientes têm o arquivo versions.tf com versões idênticas",
+      "passed": true,
+      "evidence": "dev/versions.tf e staging/versions.tf ambos com = 1.15.3 e = 6.45.0"
+    },
+    {
+      "text": "O TERRAFORM_SETUP.md menciona os dois ambientes (dev e staging)",
+      "passed": true,
+      "evidence": "TERRAFORM_SETUP.md lista dev e staging na seção de ambientes"
+    },
+    {
+      "text": "O arquivo .gitignore inclui *.tfvars mas exclui *.tfvars.example",
+      "passed": true,
+      "evidence": ".gitignore contém '*.tfvars' e '!*.tfvars.example'"
+    },
+    {
+      "text": "A versão no .terraform-version é a mesma do required_version no versions.tf",
+      "passed": true,
+      "evidence": ".terraform-version='1.15.3' igual a required_version='= 1.15.3'"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1.0
+  }
+}

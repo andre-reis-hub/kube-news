@@ -1,0 +1,15 @@
+{
+  "eval_id": 2,
+  "eval_name": "audit-violations",
+  "prompt": "audita o arquivo .github/workflows/ci-cd.yml e corrige as violations",
+  "assertions": [
+    "Identificou R1: github.sha e latest em vez de run_number",
+    "Identificou R2: actions/checkout@main — versão inválida",
+    "Identificou R3: ausência de bloco permissions:",
+    "Identificou R4: ausência de timeout-minutes",
+    "Identificou R6: curl manual para instalar doctl",
+    "Apresentou relatório de violations antes de editar",
+    "O arquivo corrigido usa github.run_number",
+    "O arquivo corrigido tem permissions: e timeout-minutes"
+  ]
+}

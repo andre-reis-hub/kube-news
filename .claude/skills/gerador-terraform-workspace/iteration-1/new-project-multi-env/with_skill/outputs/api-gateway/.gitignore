@@ -1,0 +1,18 @@
+# Estado Terraform — nunca commitar
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+crash.log
+
+# Variáveis com valores reais — usar .tfvars.example no lugar
+*.tfvars
+!*.tfvars.example
+
+# Overrides locais
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc

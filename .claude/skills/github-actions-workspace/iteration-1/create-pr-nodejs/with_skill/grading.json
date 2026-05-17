@@ -1,0 +1,11 @@
+{
+  "expectations": [
+    {"text": "Trigger inclui pull_request", "passed": true, "evidence": "on: pull_request: branches: [main]"},
+    {"text": "Usa actions/setup-node com versão exata", "passed": true, "evidence": "actions/setup-node@v6.4.0 — versão exata via GitHub API"},
+    {"text": "permissions: read-only", "passed": true, "evidence": "permissions: contents: read"},
+    {"text": "timeout-minutes no job", "passed": true, "evidence": "timeout-minutes: 10"},
+    {"text": "Sem scripts manuais para Node", "passed": true, "evidence": "Usa actions/setup-node, não run: curl/apt"},
+    {"text": "node-version via with:", "passed": true, "evidence": "with: node-version: '20'"}
+  ],
+  "summary": {"passed": 6, "failed": 0, "total": 6, "pass_rate": 1.0}
+}

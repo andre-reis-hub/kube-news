@@ -25,7 +25,20 @@
       "Bash(kubectl apply *)",
       "Bash(openspec instructions *)",
       "Bash(openspec status *)",
-      "Bash(openspec list *)"
+      "Bash(openspec list *)",
+      "Bash(git rm *)",
+      "Bash(git commit *)",
+      "Bash(git ls-tree *)",
+      "Skill(skill-creator)",
+      "mcp__context7__resolve-library-id",
+      "WebFetch(domain:registry.terraform.io)",
+      "WebFetch(domain:checkpoint-api.hashicorp.com)",
+      "mcp__context7__query-docs",
+      "Bash(python eval-viewer/generate_review.py /mnt/c/Users/Andre/Documents/CLAUDE/KUBE-NEWS/kube-news/.claude/skills/gerador-terraform-workspace/iteration-1 --skill-name gerador-terraform --benchmark /mnt/c/Users/Andre/Documents/CLAUDE/KUBE-NEWS/kube-news/.claude/skills/gerador-terraform-workspace/iteration-1/benchmark.json --static /tmp/gerador-terraform-review.html)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(git -C /mnt/c/Users/Andre/Documents/CLAUDE/KUBE-NEWS/kube-news status)",
+      "Bash(git -C /mnt/c/Users/Andre/Documents/CLAUDE/KUBE-NEWS/kube-news log --oneline -5)",
+      "Bash(git *)"
     ]
   }
 }

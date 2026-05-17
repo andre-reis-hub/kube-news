@@ -1,0 +1,13 @@
+{
+  "expectations": [
+    {"text": "Arquivo .yml criado em outputs/", "passed": true, "evidence": "ci-cd.yml gerado"},
+    {"text": "Tag usa github.run_number", "passed": true, "evidence": "tags: ${{ env.IMAGE }}:${{ github.run_number }}"},
+    {"text": "permissions: explícito", "passed": true, "evidence": "permissions: contents: read presente"},
+    {"text": "timeout-minutes no job", "passed": true, "evidence": "timeout-minutes: 20 no job build-and-deploy"},
+    {"text": "Sem secrets hardcoded", "passed": true, "evidence": "Todos os valores sensíveis usam ${{ secrets.* }}"},
+    {"text": "Usa digitalocean/action-doctl", "passed": true, "evidence": "uses: digitalocean/action-doctl@v2.5.2"},
+    {"text": "Versões exatas nas actions", "passed": true, "evidence": "checkout@v6.0.2, action-doctl@v2.5.2, login-action@v4.1.0, build-push-action@v7.1.0"},
+    {"text": "Usa docker/login-action ou build-push-action", "passed": true, "evidence": "docker/login-action@v4.1.0 e docker/build-push-action@v7.1.0"}
+  ],
+  "summary": {"passed": 8, "failed": 0, "total": 8, "pass_rate": 1.0}
+}

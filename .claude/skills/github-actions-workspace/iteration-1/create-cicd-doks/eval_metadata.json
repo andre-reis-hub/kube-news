@@ -1,0 +1,15 @@
+{
+  "eval_id": 1,
+  "eval_name": "create-cicd-doks",
+  "prompt": "cria um workflow de CI/CD para build e push de imagem Docker no DigitalOcean Container Registry com deploy no DOKS",
+  "assertions": [
+    "O arquivo .github/workflows/ foi criado com extensão .yml ou .yaml",
+    "A tag de imagem usa github.run_number e não github.sha ou latest",
+    "O workflow tem bloco permissions: explícito",
+    "Todo job tem timeout-minutes definido",
+    "Nenhum secret está hardcoded — todos usam ${{ secrets.* }}",
+    "Usa digitalocean/action-doctl em vez de curl manual",
+    "As versões das actions são exatas (não @v4, @main ou @latest)",
+    "Usa docker/login-action ou docker/build-push-action em vez de run: docker"
+  ]
+}

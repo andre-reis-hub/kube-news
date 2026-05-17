@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "skill_name": "gerador-terraform",
+    "skill_path": "/mnt/c/Users/Andre/Documents/CLAUDE/KUBE-NEWS/kube-news/.claude/skills/gerador-terraform",
+    "timestamp": "2026-05-17T00:00:00Z",
+    "evals_run": ["new-project-single-env", "new-project-multi-env", "project-single-prod"],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "eval_name": "new-project-single-env",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 9,
+        "failed": 0,
+        "total": 9,
+        "time_seconds": 45.0,
+        "tokens": 28000,
+        "tool_calls": 16,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "environments/production/ com 5 arquivos", "passed": true, "evidence": "Todos os arquivos gerados"},
+        {"text": "required_version = '= 1.15.3'", "passed": true, "evidence": "Versão real buscada via WebFetch"},
+        {"text": "AWS provider = 6.45.0", "passed": true, "evidence": "Versão real buscada via WebFetch"},
+        {"text": ".gitignore com .terraform/ e *.tfvars", "passed": true, "evidence": "Arquivo completo gerado"},
+        {"text": ".terraform-version existe", "passed": true, "evidence": "Contém 1.15.3"},
+        {"text": "modules/README.md existe", "passed": true, "evidence": "Criado com instruções"},
+        {"text": "TERRAFORM_SETUP.md completo", "passed": true, "evidence": "Versões e primeiros passos presentes"},
+        {"text": "Terraform >= 1.10.0", "passed": true, "evidence": "1.15.3 via checkpoint-api"},
+        {"text": "AWS provider >= 6.0.0", "passed": true, "evidence": "6.45.0 via registry.terraform.io"}
+      ]
+    },
+    {
+      "eval_id": 1,
+      "eval_name": "new-project-single-env",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.11,
+        "passed": 1,
+        "failed": 8,
+        "total": 9,
+        "time_seconds": 18.0,
+        "tokens": 8000,
+        "tool_calls": 6,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "environments/production/ com 5 arquivos", "passed": true, "evidence": "Arquivos básicos criados"},
+        {"text": "required_version = '= 1.15.3'", "passed": false, "evidence": "Usou '>= 1.0' sem consultar fonte"},
+        {"text": "AWS provider = 6.45.0", "passed": false, "evidence": "Usou '~> 5.0' desatualizado"},
+        {"text": ".gitignore com .terraform/ e *.tfvars", "passed": false, "evidence": ".gitignore incompleto"},
+        {"text": ".terraform-version existe", "passed": false, "evidence": "Não gerado"},
+        {"text": "modules/README.md existe", "passed": false, "evidence": "modules/ não criado"},
+        {"text": "TERRAFORM_SETUP.md completo", "passed": false, "evidence": "Não gerado"},
+        {"text": "Terraform >= 1.10.0", "passed": false, "evidence": "'>= 1.0' não garante versão recente"},
+        {"text": "AWS provider >= 6.0.0", "passed": false, "evidence": "'~> 5.0' é versão anterior à 6.x"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "new-project-multi-env",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 105.0,
+        "tokens": 27332,
+        "tool_calls": 32,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "environments/dev/ criado", "passed": true, "evidence": "Diretório completo"},
+        {"text": "environments/staging/ criado", "passed": true, "evidence": "Diretório completo"},
+        {"text": "Versões idênticas em dev e staging", "passed": true, "evidence": "= 1.15.3 e = 6.45.0 em ambos"},
+        {"text": "TERRAFORM_SETUP.md menciona dev e staging", "passed": true, "evidence": "Ambos listados"},
+        {"text": ".gitignore com !*.tfvars.example", "passed": true, "evidence": "Exclusão presente"},
+        {"text": ".terraform-version = required_version", "passed": true, "evidence": "1.15.3 em ambos"}
+      ]
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "new-project-multi-env",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 3,
+        "failed": 3,
+        "total": 6,
+        "time_seconds": 22.0,
+        "tokens": 9000,
+        "tool_calls": 8,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "environments/dev/ criado", "passed": true, "evidence": "Diretório básico criado"},
+        {"text": "environments/staging/ criado", "passed": true, "evidence": "Diretório básico criado"},
+        {"text": "Versões idênticas em dev e staging", "passed": true, "evidence": ">= 1.0 e ~> 5.0 em ambos (iguais mas desatualizados)"},
+        {"text": "TERRAFORM_SETUP.md menciona dev e staging", "passed": false, "evidence": "Não gerado"},
+        {"text": ".gitignore com !*.tfvars.example", "passed": false, "evidence": ".gitignore não gerado"},
+        {"text": ".terraform-version = required_version", "passed": false, "evidence": ".terraform-version não gerado"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "project-single-prod",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 42.0,
+        "tokens": 26000,
+        "tool_calls": 15,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "environments/prod/ criado", "passed": true, "evidence": "Diretório completo"},
+        {"text": "Somente prod em environments/", "passed": true, "evidence": "Apenas prod gerado"},
+        {"text": "AWS provider versão real = A.B.C", "passed": true, "evidence": "= 6.45.0 em versions.tf"},
+        {"text": "TERRAFORM_SETUP.md menciona prod", "passed": true, "evidence": "Ambiente prod descrito"},
+        {"text": "TERRAFORM_SETUP.md tem seção Backend", "passed": true, "evidence": "Backend não configurado + sugestão S3"},
+        {"text": "terraform.tfvars.example com aws_region", "passed": true, "evidence": "aws_region = us-east-1"}
+      ]
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "project-single-prod",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 3,
+        "failed": 3,
+        "total": 6,
+        "time_seconds": 15.0,
+        "tokens": 7500,
+        "tool_calls": 6,
+        "errors": 0
+      },
+      "expectations": [
+        {"text": "environments/prod/ criado", "passed": true, "evidence": "Diretório básico criado"},
+        {"text": "Somente prod em environments/", "passed": true, "evidence": "Apenas prod"},
+        {"text": "AWS provider versão real = A.B.C", "passed": false, "evidence": "'~> 5.0' sem consultar registry"},
+        {"text": "TERRAFORM_SETUP.md menciona prod", "passed": false, "evidence": "Não gerado"},
+        {"text": "TERRAFORM_SETUP.md tem seção Backend", "passed": false, "evidence": "Não gerado"},
+        {"text": "terraform.tfvars.example com aws_region", "passed": true, "evidence": "aws_region = us-east-1"}
+      ]
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0},
+      "time_seconds": {"mean": 64.0, "stddev": 31.6, "min": 42.0, "max": 105.0},
+      "tokens": {"mean": 27110, "stddev": 1100, "min": 26000, "max": 28000}
+    },
+    "without_skill": {
+      "pass_rate": {"mean": 0.37, "stddev": 0.18, "min": 0.11, "max": 0.5},
+      "time_seconds": {"mean": 18.3, "stddev": 3.0, "min": 15.0, "max": 22.0},
+      "tokens": {"mean": 8167, "stddev": 763, "min": 7500, "max": 9000}
+    },
+    "delta": {
+      "pass_rate": "+0.63",
+      "time_seconds": "+45.7",
+      "tokens": "+18943"
+    }
+  },
+  "notes": [
+    "with_skill: 100% pass rate nos 3 evals — skill garante estrutura completa e versões reais",
+    "without_skill: pass rate médio 37% — falha sistematicamente em versões, TERRAFORM_SETUP.md, .terraform-version e modules/",
+    "Diferença de versão é crítica: sem skill usa '~> 5.0' (AWS provider v5, desatualizado); com skill usa '= 6.45.0' (mais recente real)",
+    "Custo da skill: ~46s e ~19k tokens extras por execução — justificado pela qualidade do output",
+    "Eval 1 (single env) é o mais discriminante: 100% vs 11% — melhor caso de uso da skill"
+  ]
+}
